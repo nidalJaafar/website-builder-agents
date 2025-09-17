@@ -1,0 +1,4 @@
+.idea
+.venv
+.env
+src/website_builder_poc.egg-info

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Design Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 2.5rem;
+        }
+        
+        .breakpoint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .breakpoint-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+        
+        .breakpoint-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .breakpoint-range {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .current-size {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid #2196f3;
+        }
+        
+        .size-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+        
+        .orientation {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .test-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .test-button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            background: #f1f8e9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .pass {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .fail {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .breakpoint-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .test-container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .size-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>📱 Responsive Design Test</h1>
+        
+        <div class="current-size">
+            <div class="size-display" id="windowSize">Loading...</div>
+            <div class="orientation" id="orientation"></div>
+        </div>
+        
+        <div class="breakpoint-grid">
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">📱 Mobile (XS)</div>
+                <div class="breakpoint-range">&lt; 576px</div>
+                <div>Single column layout</div>
+            </div>
+            
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">📱 Mobile (SM)</div>
+                <div class="breakpoint-range">576px - 767px</div>
+                <div>2-column grids</div>
+            </div>
+            
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">📱 Tablet (MD)</div>
+                <div class="breakpoint-range">768px - 991px</div>
+                <div>Tablet layout</div>
+            </div>
+            
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">💻 Desktop (LG)</div>
+                <div class="breakpoint-range">992px - 1199px</div>
+                <div>3-column grids</div>
+            </div>
+            
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">💻 Desktop (XL)</div>
+                <div class="breakpoint-range">1200px - 1399px</div>
+                <div>4-column grids</div>
+            </div>
+            
+            <div class="breakpoint-card">
+                <div class="breakpoint-name">🖥️ Large (2XL)</div>
+                <div class="breakpoint-range">≥ 1400px</div>
+                <div>Large desktop layout</div>
+            </div>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-button" onclick="testResponsive()">Run Responsive Test</button>
+            <button class="test-button" onclick="testTouch()">Test Touch Support</button>
+            <button class="test-button" onclick="testPerformance()">Test Performance</button>
+            <button class="test-button" onclick="testBreakpoints()">Test Breakpoints</button>
+        </div>
+        
+        <div class="results" id="testResults">
+            <h3>Test Results will appear here...</h3>
+        </div>
+    </div>
+
+    <script>
+        function updateWindowSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const orientation = width > height ? 'Landscape' : 'Portrait';
+            
+            document.getElementById('windowSize').textContent = 
+                `${width} × ${height} pixels`;
+            document.getElementById('orientation').textContent = 
+                `${orientation} orientation`;
+        }
+        
+        function testResponsive() {
+            const results = document.getElementById('testResults');
+            results.innerHTML = '<h3>Responsive Design Test Results:</h3>';
+            
+            const tests = [
+                {
+                    name: 'Viewport Meta Tag',
+                    test: () => {
+                        const viewport = document.querySelector('meta[name="viewport"]');
+                        return viewport && viewport.content.includes('width=device-width');
+                    }
+                },
+                {
+                    name: 'CSS Grid Support',
+                    test: () => CSS.supports('display', 'grid')
+                },
+                {
+                    name: 'Flexbox Support',
+                    test: () => CSS.supports('display', 'flex')
+                },
+                {
+                    name: 'Touch Support Detection',
+                    test: () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
+                },
+                {
+                    name: 'Responsive Images',
+                    test: () => {
+                        const images = document.querySelectorAll('img');
+                        return images.length === 0 || 
+                               Array.from(images).every(img => img.style.maxWidth === '100%');
+                    }
+                }
+            ];
+            
+            tests.forEach(test => {
+                const result = test.test();
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    ${test.name}: 
+                    <span class="${result ? 'pass' : 'fail'}">
+                        ${result ? '✓ PASS' : '✗ FAIL'}
+                    </span>
+                `;
+                results.appendChild(resultItem);
+            });
+        }
+        
+        function testTouch() {
+            const results = document.getElementById('testResults');
+            results.innerHTML = '<h3>Touch Support Test Results:</h3>';
+            
+            const touchTests = [
+                {
+                    name: 'Touch Events Supported',
+                    test: () => 'ontouchstart' in window
+                },
+                {
+                    name: 'Pointer Events Supported',
+                    test: () => 'onpointerdown' in window
+                },
+                {
+                    name: 'Max Touch Points',
+                    test: () => navigator.maxTouchPoints || 0
+                },
+                {
+                    name: 'Touch Screen Detection',
+                    test: () => window.matchMedia('(pointer: coarse)').matches
+                }
+            ];
+            
+            touchTests.forEach(test => {
+                const result = test.test();
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                if (typeof result === 'number') {
+                    resultItem.innerHTML = `
+                        ${test.name}: 
+                        <span class="pass">${result} points</span>
+                    `;
+                } else {
+                    resultItem.innerHTML = `
+                        ${test.name}: 
+                        <span class="${result ? 'pass' : 'fail'}">
+                            ${result ? '✓ YES' : '✗ NO'}
+                        </span>
+                    `;
+                }
+                
+                results.appendChild(resultItem);
+            });
+        }
+        
+        function testPerformance() {
+            const results = document.getElementById('testResults');
+            results.innerHTML = '<h3>Performance Test Results:</h3>';
+            
+            const perfTests = [
+                {
+                    name: 'Hardware Acceleration',
+                    test: () => CSS.supports('transform', 'translateZ(0)')
+                },
+                {
+                    name: 'CSS Will-Change Support',
+                    test: () => CSS.supports('will-change', 'transform')
+                },
+                {
+                    name: 'Reduced Motion Preference',
+                    test: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                },
+                {
+                    name: 'High DPI Display',
+                    test: () => window.devicePixelRatio > 1
+                }
+            ];
+            
+            perfTests.forEach(test => {
+                const result = test.test();
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    ${test.name}: 
+                    <span class="${result ? 'pass' : 'fail'}">
+                        ${result ? '✓ YES' : '✗ NO'}
+                    </span>
+                `;
+                results.appendChild(resultItem);
+            });
+        }
+        
+        function testBreakpoints() {
+            const results = document.getElementById('testResults');
+            results.innerHTML = '<h3>Breakpoint Detection:</h3>';
+            
+            const width = window.innerWidth;
+            let currentBreakpoint = '';
+            
+            if (width < 576) currentBreakpoint = 'XS (< 576px)';
+            else if (width < 768) currentBreakpoint = 'SM (576px - 767px)';
+            else if (width < 992) currentBreakpoint = 'MD (768px - 991px)';
+            else if (width < 1200) currentBreakpoint = 'LG (992px - 1199px)';
+            else if (width < 1400) currentBreakpoint = 'XL (1200px - 1399px)';
+            else currentBreakpoint = '2XL (≥ 1400px)';
+            
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            resultItem.innerHTML = `
+                Current Breakpoint: 
+                <span class="pass">${currentBreakpoint}</span>
+            `;
+            results.appendChild(resultItem);
+        }
+        
+        // Initialize
+        updateWindowSize();
+        window.addEventListener('resize', updateWindowSize);
+        window.addEventListener('orientationchange', updateWindowSize);
+    </script>
+</body>
+</html>

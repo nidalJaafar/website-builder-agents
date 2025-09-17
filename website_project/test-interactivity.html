@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactivity Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Interactivity Test</h1>
+    
+    <div class="test-section">
+        <h2>Mobile Menu Test</h2>
+        <button onclick="testMobileMenu()">Test Mobile Menu Toggle</button>
+        <p>Check console for mobile menu functionality</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Smooth Scroll Test</h2>
+        <button onclick="testSmoothScroll()">Test Smooth Scroll</button>
+        <p>Check if smooth scrolling works to different sections</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Animation Test</h2>
+        <button onclick="testAnimations()">Test Animations</button>
+        <p>Check if scroll animations are working</p>
+    </div>
+    
+    <script src="js/script.js"></script>
+    <script src="js/mobile-optimization.js"></script>
+    
+    <script>
+        function testMobileMenu() {
+            console.log('Testing Mobile Menu...');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (menuToggle && navMenu) {
+                console.log('Mobile menu elements found');
+                console.log('Menu toggle class:', menuToggle.className);
+                console.log('Nav menu class:', navMenu.className);
+            } else {
+                console.log('Mobile menu elements not found');
+            }
+        }
+        
+        function testSmoothScroll() {
+            console.log('Testing Smooth Scroll...');
+            const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+            console.log('Navigation links found:', navLinks.length);
+            
+            navLinks.forEach(link => {
+                console.log('Link:', link.getAttribute('href'));
+            });
+        }
+        
+        function testAnimations() {
+            console.log('Testing Animations...');
+            const animatedElements = document.querySelectorAll('.menu-item, .contact-item, .hours-item');
+            console.log('Elements with animation classes:', animatedElements.length);
+        }
+    </script>
+</body>
+</html>

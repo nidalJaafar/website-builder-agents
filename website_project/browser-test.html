@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Compatibility Test - Coffee Corner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pass { color: green; }
+        .fail { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Browser Compatibility Test</h1>
+    <p>Testing basic functionality across different browsers.</p>
+    
+    <div class="test-section">
+        <h2>CSS Variables Test</h2>
+        <div id="css-variables-test" style="color: var(--primary-color, black);">
+            If this text is brown, CSS variables are working.
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Flexbox Test</h2>
+        <div style="display: flex; gap: 10px;">
+            <div style="padding: 10px; background: #eee;">Flex item 1</div>
+            <div style="padding: 10px; background: #eee;">Flex item 2</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Grid Layout Test</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="padding: 10px; background: #eee;">Grid item 1</div>
+            <div style="padding: 10px; background: #eee;">Grid item 2</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>JavaScript Test</h2>
+        <button onclick="testJS()">Test JavaScript</button>
+        <div id="js-test-result"></div>
+    </div>
+    
+    <script>
+        function testJS() {
+            const result = document.getElementById('js-test-result');
+            try {
+                // Test basic JS functionality
+                const testArray = [1, 2, 3].map(x => x * 2);
+                result.innerHTML = '<span class="pass">✓ JavaScript working (ES6+ features supported)</span>';
+                result.innerHTML += '<br>Array.map test: ' + testArray.join(', ');
+            } catch (error) {
+                result.innerHTML = '<span class="fail">✗ JavaScript error: ' + error.message + '</span>';
+            }
+        }
+        
+        // Auto-test CSS variables
+        document.addEventListener('DOMContentLoaded', function() {
+            const cssTest = document.getElementById('css-variables-test');
+            const style = getComputedStyle(cssTest);
+            if (style.color !== 'rgb(0, 0, 0)') { // Not black
+                cssTest.innerHTML += ' <span class="pass">✓ CSS Variables working</span>';
+            } else {
+                cssTest.innerHTML += ' <span class="warning">⚠ CSS Variables may not be supported</span>';
+            }
+        });
+    </script>
+</body>
+</html>

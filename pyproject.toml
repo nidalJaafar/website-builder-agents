@@ -1,0 +1,27 @@
+[project]
+name = "website-builder-poc"
+version = "0.1.0"
+description = "Multi agent website builder"
+requires-python = ">=3.11"
+dependencies = [
+    "langchain-deepseek>=0.1.4",
+    "langchain-mcp-adapters>=0.1.9",
+    "langgraph>=0.6.6",
+    "python-dotenv>=1.1.1",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+website-builder = "website_builder.main:main"
+wb = "website_builder.main:main"
+
+test-requirements = "website_builder.scripts.test_graphs:test_requirements"
+test-tasks = "website_builder.scripts.test_graphs:test_task_manager"
+test-developer = "website_builder.scripts.test_graphs:test_developer"
+test-orchestrator = "website_builder.scripts.test_graphs:test_orchestrator"
+
+visualize-graphs = "website_builder.scripts.utilities:visualize_all_graphs"
+setup-project = "website_builder.scripts.utilities:setup_project_workspace"
+clean-project = "website_builder.scripts.utilities:clean_project_workspace"
