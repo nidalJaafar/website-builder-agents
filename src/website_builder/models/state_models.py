@@ -3,6 +3,10 @@ from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 
 
+class JsonDecoderState(TypedDict):
+    parsed_input_JSON: Dict[str, Any]
+    parsed_text: List[BaseMessage]
+
 class RequirementsState(TypedDict):
     requirements_messages: Annotated[Sequence[BaseMessage], add_messages]
     requirements_data: str

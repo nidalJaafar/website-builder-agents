@@ -10,6 +10,10 @@ dependencies = [
     "nest-asyncio>=1.6.0",
     "pyppeteer>=2.0.0",
     "python-dotenv>=1.1.1",
+    "langchain-openai>=0.3.28",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "requests>=2.31.0",
 ]
 
 [tool.uv]
@@ -27,3 +31,8 @@ test-orchestrator = "website_builder.scripts.test_graphs:test_orchestrator"
 visualize-graphs = "website_builder.scripts.utilities:visualize_all_graphs"
 setup-project = "website_builder.scripts.utilities:setup_project_workspace"
 clean-project = "website_builder.scripts.utilities:clean_project_workspace"
+
+json-parser = "website_builder.main_json:main"
+json-parser-clean = "website_builder.api.cli:clean_project"
+json-parser-setup = "website_builder.api.cli:setup_project"
+json-parser-api = "website_builder.api.cli:start_api"
