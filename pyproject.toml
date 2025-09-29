@@ -36,3 +36,5 @@ json-parser = "website_builder.main_json:main"
 json-parser-clean = "website_builder.api.cli:clean_project"
 json-parser-setup = "website_builder.api.cli:setup_project"
 json-parser-api = "website_builder.api.cli:start_api"
+
+launch-api = "website_builder.api.api:main"

@@ -2,7 +2,7 @@ from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 
 from website_builder.agents.orchestrator_agent import create_task_manager_node, create_requirements_node, \
-    finalize_project_node, create_developer_node
+    finalize_project_node, create_developer_node, route_entry_point
 from website_builder.models.state_models import OrchestratorState
 
 
@@ -22,8 +22,17 @@ async def build_orchestrator_graph():
     graph.add_node("development_phase", create_developer_node(developer_graph))
     graph.add_node("finalize_project", finalize_project_node)
 
+    # Add conditional entry point
+    graph.add_conditional_edges(
+        START,
+        route_entry_point,
+        {
+            "requirements": "requirements_phase",
+            "tasks": "task_management_phase"
+        }
+    )
+    
     # Add edges
-    graph.add_edge(START, "requirements_phase")
     graph.add_edge("requirements_phase", "task_management_phase")
     graph.add_edge("task_management_phase", "development_phase")
     graph.add_edge("development_phase", "finalize_project")
