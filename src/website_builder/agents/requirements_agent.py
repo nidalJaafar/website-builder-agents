@@ -8,6 +8,12 @@ requirements_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro").bind_tools([ex
 
 
 def user_message(state: RequirementsState) -> RequirementsState:
+    # Check if user_input is provided in state (from API)
+    if "user_input" in state and state["user_input"]:
+        message = HumanMessage(content=state["user_input"])
+        return {"requirements_messages": [message]}
+    
+    # Interactive mode (CLI)
     if not any(
             msg for msg in state["requirements_messages"] if isinstance(msg, HumanMessage)
     ):
@@ -29,3 +35,27 @@ def should_continue(state: RequirementsState) -> str:
     if isinstance(last_message, AIMessage) and last_message.tool_calls:
         return "no"
     return "yes"
+
+
+def process_single_message(state: RequirementsState) -> RequirementsState:
+    """Process a single message in conversational mode for API"""
+    # If there's a user_input in state, add it as a HumanMessage
+    if "user_input" in state and state["user_input"]:
+        # Add the user message to the conversation
+        user_msg = HumanMessage(content=state["user_input"])
+        messages = list(state["requirements_messages"]) + [user_msg]
+    else:
+        # Use existing messages
+        messages = state["requirements_messages"]
+    
+    # Get agent response
+    response = requirements_llm.invoke(messages)
+    print(f"Requirements Agent: {response.content}")
+    
+    # Add agent response to messages
+    messages.append(response)
+    
+    return {
+        "requirements_messages": messages,
+        "requirements_data": ""
+    }

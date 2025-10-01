@@ -6,19 +6,39 @@ from website_builder.prompts.requirements_prompts import requirements_system_pro
 from website_builder.prompts.task_manager_prompts import task_manager_system_prompt
 
 
+def route_entry_point(state: OrchestratorState) -> str:
+    """Route to appropriate starting phase based on current state"""
+    current_phase = state.get("current_phase", "starting")
+
+    if current_phase == "requirements_complete":
+        # Requirements already completed, skip to task management
+        return "tasks"
+    else:
+        # Start with requirements gathering
+        return "requirements"
+
+
 def create_requirements_node(requirements_graph):
     def requirements_node(state: OrchestratorState) -> OrchestratorState:
         print("Starting Requirements Phase...")
 
+        # Create requirements input state
         requirements_input: RequirementsState = {
             "requirements_messages": [SystemMessage(content=requirements_system_prompt())],
             "requirements_data": ""
         }
 
+        # If user_input is provided (from API), pass it to the requirements graph
+        if state.get("user_input"):
+            print(f"Processing user input: {state['user_input'][:100]}...")
+            requirements_input["user_input"] = state["user_input"]
+        else:
+            print("Using interactive requirements gathering...")
+
+        # Execute the requirements graph
         requirements_result = requirements_graph.invoke(requirements_input)
 
         print("Requirements Phase Complete")
-        print(requirements_result)
 
         return {
             "current_phase": "requirements_complete",
@@ -31,15 +51,18 @@ def create_requirements_node(requirements_graph):
 def create_task_manager_node(task_manager_graph):
     def task_manager_node(state: OrchestratorState) -> OrchestratorState:
         print("Starting Task Management Phase...")
-        conversation_summary = ""
 
-        print(state)
-
-        for msg in state["requirements_output"]:
-            if isinstance(msg, HumanMessage):
-                conversation_summary += f"User: {msg.content}"
-            elif isinstance(msg, AIMessage) and not msg.tool_calls:
-                conversation_summary += f"Assistant: {msg.content}"
+        # Handle different types of requirements_output
+        if isinstance(state["requirements_output"], str):
+            conversation_summary = state["requirements_output"]
+        else:
+            # Handle messages array (from requirements agent)
+            conversation_summary = ""
+            for msg in state["requirements_output"]:
+                if isinstance(msg, HumanMessage):
+                    conversation_summary += f"User: {msg.content}\n"
+                elif isinstance(msg, AIMessage) and not msg.tool_calls:
+                    conversation_summary += f"Assistant: {msg.content}\n"
 
         task_manager_input: TaskManagerState = {
             "requirements_data": conversation_summary,
@@ -51,18 +74,6 @@ def create_task_manager_node(task_manager_graph):
             ],
             "parsed_tasks": []
         }
-
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print("printing task manager input")
-        print(task_manager_input)
 
         task_result = task_manager_graph.invoke(task_manager_input)
 
@@ -106,11 +117,14 @@ def finalize_project_node(state: OrchestratorState) -> OrchestratorState:
     """Finalize the project and create summary"""
     print("Finalizing Project...")
 
+    # Handle requirements output length calculation
+    requirements_length = len(str(state["requirements_output"])) if state["requirements_output"] else 0
+
     summary = f"""
     Project Complete!
 
-    Requirements: {len(state["requirements_output"])} characters gathered
-    Tasks: {len(state["tasks_output"])} tasks generated
+    Requirements: {requirements_length} characters gathered
+    Tasks: {len(state["tasks_output"])} tasks generated  
     Development: {state["development_output"]}
 
     Your website has been successfully created!
