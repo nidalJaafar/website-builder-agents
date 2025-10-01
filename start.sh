@@ -2,4 +2,4 @@
 
 uv run clean-project
 uv run setup-project
-uv run wb
+uv run api
