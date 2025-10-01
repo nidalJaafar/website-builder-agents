@@ -1,10 +1,10 @@
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain_deepseek import ChatDeepSeek
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from website_builder.models.state_models import RequirementsState
 from website_builder.tools.validation_tools import exit_tool
 
-requirements_llm = ChatDeepSeek(model="deepseek-chat").bind_tools([exit_tool])
+requirements_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro").bind_tools([exit_tool])
 
 
 def user_message(state: RequirementsState) -> RequirementsState:

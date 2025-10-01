@@ -64,67 +64,35 @@ def test_task_manager():
     print("Building task manager graph...")
     app = build_task_manager_graph()
 
-    sample_requirements = """User: i want to build a website for a coffee shop 
-Agent: Great! Let's start with the basics. What's the name of your coffee shop?
-User: Special Brew
-Agent: Perfect! Special Brew sounds like a great name. 
+    sample_requirements = """User: i want to build a website for my clothing shop
+Agent: What type of clothing shop is this? (For example: men's fashion, women's apparel, children's clothing, sportswear, vintage, etc.)
+User: men's fashion
+Agent: What should the website accomplish? (For example: sell products online, showcase your collection, generate leads, build brand awareness, etc.)
+User: sell production online and showcase collection
+Agent: What are the main sections you need on the website? (For example: Home, Shop, About, Contact, Lookbook, etc.)
+User: all
+Agent: Let me clarify - when you say "all," do you mean you want all of these sections:
+- Home (main landing page)
+- Shop (product catalog and shopping)
+- About (your brand story)
+- Contact (contact information and form)
+- Lookbook (style inspiration and collection showcase)
 
-What should the website accomplish for your coffee shop? For example:
-- Show your menu and prices
-- Allow online ordering
-- Share your location and hours
-- Tell your story/brand
-- Something else?
-User: show menu and prices, share location and hours
-Agent: Got it - menu/prices and location/hours are the main goals.
-
-What main sections do you need on the website? For example:
-- Home page
-- Menu page
-- About us
-- Contact/location
-- Any others?
-User: yes these sound fine
-Agent: Great! Let's focus on the content for each section.
-
-What specific content should go on the Menu page? For example:
-- Coffee drinks (espresso, latte, etc.)
-- Food items (pastries, sandwiches)
-- Prices for each item
-- Any special categories or featured items?
-User: yes these are good, coffee drinks and food items, each item should have a price and an image
-Agent: Perfect! Now for the Contact/Location section - what specific information should be included?
-
-For example:
-- Address
-- Phone number
-- Hours of operation
-- Email address
-- Social media links
-- Map/directions
-User: phone number: 71123456, hours: all weel from 10am to 7pm   
-Agent: Great! Do you have any design preferences for the website? For example:
-
-- Specific colors you'd like to use
-- Any particular style (modern, rustic, minimalist, etc.)
-- Websites you like as inspiration
-- Logo or branding elements to incorporate
-User: the website should be minimalistic and modern, use black white grey and pastel green         
-Agent: Excellent! I have all the essential information. Here's what I gathered:
-
-**Business**: Special Brew coffee shop
-**Purpose**: Show menu/prices and share location/hours
-**Sections**: Home, Menu, About us, Contact/location
-**Key content**:
-- Menu page: Coffee drinks and food items with prices and images
-- Contact: Phone 71123456, hours 10am-7pm all week
-**Design**: Minimalistic and modern using black, white, grey, and pastel green
-
-Is this complete enough to start building your website?
+Or are there other specific sections you'd like to include?
 User: yes
-Agent: Perfect! I have everything needed to start building your Special Brew coffee shop website. The design will be minimalistic and modern with your chosen color scheme, featuring all the key sections and content you specified.
+Agent: What specific content should go in the About section? (For example: your brand story, mission, team information, company history, etc.)
+User: team information
+Agent: What contact information should be included on the website? (For example: phone number, email address, physical address, social media links, contact form, etc.)
+User: phone number: 7123456
+Agent: Here's what I gathered:
+- Business: Men's fashion clothing shop
+- Purpose: Sell products online and showcase collection
+- Sections: Home, Shop, About, Contact, Lookbook
+- Key content: About section will include team information
+- Contact info: Phone number 7123456
 
-Good luck with your website project!
+Is this complete enough to start building your website, or would you like to add any design preferences, specific content for other sections, or additional contact details?
+User: yes
      """
 
     initial_state = {
@@ -171,38 +139,45 @@ async def test_developer_async():
     sample_tasks = [
   {
     "id": "TASK_001",
-    "title": "Create Complete HTML Structure and Content",
-    "description": "Create index.html with full semantic structure: header with 'Special Brew' logo and navigation (Home, Menu, About Us, Contact), hero section with coffee shop branding, main content areas for all sections, contact information with phone (71123456) and hours (10am-7pm daily), and footer. Include placeholder comments for menu items and images.",
-    "files": ["index.html"],
-    "success_criteria": "HTML file exists with complete semantic structure, all navigation links, contact information with correct phone and hours, and placeholder content for all sections",
+    "title": "Create Multi-Page Project Structure and Core HTML Pages",
+    "description": "Create complete project directory structure (website_project/css/, website_project/js/, website_project/images/) and all main HTML pages: index.html (Home), shop.html (Shop), about.html (About), contact.html (Contact), lookbook.html (Lookbook). Each page must include: sophisticated semantic HTML5 structure with ARIA landmarks, responsive meta tags, Open Graph meta data, consistent header with animated navigation (logo + menu), hero section with brand messaging, main content area with section-specific placeholders, and semantic footer with contact info. Header navigation must link correctly between all pages. Include phone number 7123456 in contact page and footer.",
+    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/", "website_project/js/", "website_project/images/"],
+    "success_criteria": "All 5 HTML pages created with proper semantic structure, consistent navigation linking between pages, phone number included in contact page, all directories exist, pages validate as HTML5 with proper meta tags",
     "dependencies": "None"
   },
   {
     "id": "TASK_002",
-    "title": "Create Complete CSS Styling and Layout",
-    "description": "Create styles.css with minimalistic modern design using black, white, grey, and pastel green color scheme. Implement responsive grid layout, typography styling, navigation styling, section spacing, and mobile-first responsive design with breakpoints at 768px and 1024px. Ensure proper contrast and readability.",
-    "files": ["css/styles.css"],
-    "success_criteria": "CSS file provides complete styling for all HTML elements, responsive design works on mobile/tablet/desktop, color scheme is properly implemented, and layout is visually appealing",
+    "title": "Implement Advanced CSS Framework with Sophisticated Styling System",
+    "description": "Create website_project/css/styles.css with comprehensive CSS framework featuring: CSS Grid master layout system, custom CSS properties for brand colors and typography, advanced responsive design with mobile-first approach using clamp() for fluid typography, sophisticated animations using @keyframes for micro-interactions, glassmorphism effects for modern UI elements, advanced hover states with transform3d transitions, parallax scrolling capabilities, and intersection observer-ready animation classes. Include specific styling for: navigation animations, hero section gradients, product card layouts, team member displays, and lookbook masonry grid.",
+    "files": ["website_project/css/styles.css"],
+    "success_criteria": "Complete CSS framework with modern styling techniques, responsive design system, animation classes, custom properties for consistent theming, ready to enhance all HTML pages",
     "dependencies": "TASK_001"
   },
   {
     "id": "TASK_003",
-    "title": "Add Menu Content and Styling",
-    "description": "Update index.html with complete menu section containing coffee drinks and food items, each with name, price, and image placeholder. Add specific CSS styling for menu items including grid layout, card design, and image containers. Include at least 6 coffee items and 4 food items with realistic pricing.",
-    "files": ["index.html", "css/styles.css"],
-    "success_criteria": "Menu section displays properly with items in responsive grid, each item has name/price/image area, styling matches overall design theme",
-    "dependencies": "TASK_002"
+    "title": "Build Sophisticated JavaScript Interactions and E-commerce Functionality",
+    "description": "Create website_project/js/main.js with advanced JavaScript features: smooth page transitions between multi-page navigation, product filtering system for shop page with debounced search, interactive image galleries for lookbook with touch gesture support, team member modal displays for about page, real-time form validation for contact page with custom styling, shopping cart functionality with local storage persistence, and intersection observer animations for scroll-triggered content reveals. Implement event delegation for optimal performance and progressive enhancement approach.",
+    "files": ["website_project/js/main.js"],
+    "success_criteria": "JavaScript provides seamless multi-page navigation, functional product filtering, interactive galleries, form validation, shopping cart functionality, and scroll animations across all pages",
+    "dependencies": "TASK_001, TASK_002"
   },
   {
     "id": "TASK_004",
-    "title": "Add JavaScript Interactivity and Final Polish",
-    "description": "Create script.js with smooth scrolling navigation, mobile menu toggle functionality, and any interactive elements. Perform final CSS optimizations for spacing, typography, and responsive behavior. Ensure all sections are properly aligned and the site is fully functional across devices.",
-    "files": ["js/script.js", "css/styles.css"],
-    "success_criteria": "Navigation works smoothly, mobile menu functions properly, site is fully responsive and polished, all interactive elements work as expected",
-    "dependencies": "TASK_003"
+    "title": "Create Page-Specific Content and Advanced Interactive Elements",
+    "description": "Enhance each HTML page with sophisticated content structures: Home page with featured products carousel and brand storytelling sections, Shop page with product grid featuring filtering by category/size/price with smooth animations, About page with team member cards that reveal detailed bios on interaction, Contact page with multi-step form and real-time validation feedback, Lookbook page with masonry grid layout and full-screen image modal viewing. Implement CSS Grid asymmetrical layouts, overlapping elements, and magazine-style designs for visual sophistication.",
+    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/styles.css", "website_project/js/main.js"],
+    "success_criteria": "All pages feature advanced interactive elements, sophisticated layouts, smooth animations, and professional men's fashion aesthetic with complete e-commerce functionality",
+    "dependencies": "TASK_001, TASK_002, TASK_003"
+  },
+  {
+    "id": "TASK_005",
+    "title": "Final Optimization, Performance Enhancements and SEO Implementation",
+    "description": "Optimize all files for production: minify CSS and JavaScript, implement lazy loading for images, add comprehensive SEO meta tags including structured data for products, ensure WCAG 2.1 AA accessibility compliance, optimize navigation for screen readers, implement service worker for offline functionality, add social media sharing capabilities, and perform cross-browser testing. Include performance optimizations like image compression recommendations and critical CSS inlining.",
+    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/styles.css", "website_project/js/main.js"],
+    "success_criteria": "Website achieves high performance scores, full accessibility compliance, comprehensive SEO implementation, cross-browser compatibility, and professional production readiness",
+    "dependencies": "TASK_001, TASK_002, TASK_003, TASK_004"
   }
 ]
-
     initial_state = {
         "parsed_tasks": sample_tasks,
         "current_task_index": 0,

@@ -18,10 +18,11 @@ def create_requirements_node(requirements_graph):
         requirements_result = requirements_graph.invoke(requirements_input)
 
         print("Requirements Phase Complete")
+        print(requirements_result)
 
         return {
             "current_phase": "requirements_complete",
-            "requirements_output": requirements_result["requirements_data"]
+            "requirements_output": requirements_result["requirements_messages"][1:]
         }
 
     return requirements_node
@@ -31,6 +32,8 @@ def create_task_manager_node(task_manager_graph):
     def task_manager_node(state: OrchestratorState) -> OrchestratorState:
         print("Starting Task Management Phase...")
         conversation_summary = ""
+
+        print(state)
 
         for msg in state["requirements_output"]:
             if isinstance(msg, HumanMessage):
@@ -49,6 +52,18 @@ def create_task_manager_node(task_manager_graph):
             "parsed_tasks": []
         }
 
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print("printing task manager input")
+        print(task_manager_input)
+
         task_result = task_manager_graph.invoke(task_manager_input)
 
         print(f"Task Management Complete - Generated {len(task_result['parsed_tasks'])} tasks")
@@ -62,17 +77,18 @@ def create_task_manager_node(task_manager_graph):
 
 
 def create_developer_node(developer_graph):
-    def developer_node(state: OrchestratorState) -> OrchestratorState:
+    async def developer_node(state: OrchestratorState) -> OrchestratorState:
         print(" Starting Development Phase...")
 
         developer_input: DeveloperState = {
             "parsed_tasks": state["tasks_output"],
             "current_task_index": 0,
             "project_status": "in_progress",
-            "developer_messages": [SystemMessage(content=developer_system_prompt())]
+            "developer_messages": [SystemMessage(content=developer_system_prompt())],
+            "project_context": {}
         }
 
-        dev_result = developer_graph.invoke(developer_input)
+        dev_result = await developer_graph.ainvoke(developer_input)
 
         print("Development Phase Complete")
 

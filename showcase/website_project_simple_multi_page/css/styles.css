@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Lora:wght@400;700&display=swap');
+
+:root {
+  --cream: #FDF5E6;
+  --brown: #6F4E37;
+  --rose-gold: #B76E79;
+  --text-dark: #3D2B1F;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--cream);
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+    color: var(--brown);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header and Navigation */
+.main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--cream);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brown);
+    text-decoration: none;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.main-nav ul li {
+    margin-left: 25px;
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: var(--brown);
+    font-size: 18px;
+    transition: color 0.2s ease-in-out;
+    padding-bottom: 3px;
+}
+
+.main-nav ul li a:hover {
+    color: var(--rose-gold);
+}
+
+.main-nav ul li a.active {
+    color: var(--rose-gold);
+    border-bottom: 2px solid var(--rose-gold);
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--brown);
+    color: var(--cream);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.footer-content p {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Home Page: Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 70vh;
+    padding: 4rem 0;
+}
+
+.hero h1 {
+    font-family: 'Lora', serif;
+    font-size: 52px;
+    color: var(--brown);
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Home Page: Featured Pastries */
+.featured-pastries {
+    padding: 4rem 0;
+}
+
+.featured-pastries h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 36px;
+}
+
+.pastry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.pastry-card {
+    border: 1px solid #EAE0D5;
+    background-color: #fff;
+    padding: 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.pastry-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.pastry-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+
+.pastry-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 22px;
+}
+
+/* Menu Page */
+.menu-page {
+    padding: 4rem 0;
+}
+
+.menu-page h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 40px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 1rem;
+    border-bottom: 2px dotted #D3C5B7; /* A lighter brown */
+}
+
+.item-name {
+    font-size: 20px;
+    color: var(--brown);
+}
+
+.item-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--rose-gold);
+}
+
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* About Page */
+.about-page {
+    padding: 4rem 0;
+}
+
+.about-page h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 40px;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.about-image {
+    flex: 0 0 40%;
+}
+
+.about-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-text p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+    }
+
+    .about-image {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Contact Page */
+.contact-page {
+    padding: 4rem 0;
+}
+
+.contact-page h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 40px;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 50px;
+}
+
+.contact-info h2 {
+    margin-bottom: 1.5rem;
+    font-size: 28px;
+}
+
+.contact-info p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+    border-color: #B71C1C;
+}
+
+.error-message {
+    color: #B71C1C;
+    font-size: 14px;
+    display: none;
+}
+
+button[type="submit"] {
+    background-color: var(--rose-gold);
+    color: var(--cream);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    background-color: #A35F6A; /* Darker rose-gold */
+}
+
+#form-message-container .success-message {
+    background-color: #DFF2BF;
+    color: #4F8A10;
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .contact-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+

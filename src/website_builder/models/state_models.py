@@ -23,6 +23,7 @@ class DeveloperState(TypedDict):
     current_task_index: int
     project_status: str
     developer_messages: Annotated[Sequence[BaseMessage], add_messages]
+    project_context: Dict[str, Any]
 
 
 class OrchestratorState(TypedDict):

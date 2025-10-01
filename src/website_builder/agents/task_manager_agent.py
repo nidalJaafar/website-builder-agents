@@ -1,10 +1,8 @@
-import re
-
-from langchain_deepseek import ChatDeepSeek
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from website_builder.models.state_models import TaskManagerState
 
-task_manager_llm = ChatDeepSeek(model="deepseek-chat")
+task_manager_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
 
 
 def task_manager_send(state: TaskManagerState) -> TaskManagerState:

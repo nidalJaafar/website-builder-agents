@@ -1,0 +1,293 @@
+/* Basic CSS Reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --soft-cream: #F5EFE6;
+    --warm-brown: #6F4E37;
+    --rose-gold: #B76E79;
+    --text-dark: #4A3728;
+    --white: #FFFFFF;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--soft-cream);
+    color: var(--text-dark);
+}
+
+/* Header and Navigation */
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: rgba(245, 239, 230, 0.9);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+}
+
+.brand-logo h1 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--warm-brown);
+    text-decoration: none;
+}
+
+.brand-logo {
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--warm-brown);
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--rose-gold);
+}
+
+/* Home Section */
+#home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 90vh;
+    padding: 40px 20px;
+}
+
+#home h1 {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    color: var(--warm-brown);
+    margin-bottom: 16px;
+}
+
+#home p {
+    font-size: 20px;
+    color: var(--text-dark);
+    max-width: 600px;
+    margin-bottom: 32px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--rose-gold);
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #a15c66;
+}
+
+/* General Section Styling */
+section {
+    padding: 80px 20px;
+}
+
+section h2 {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 42px;
+    color: var(--warm-brown);
+    margin-bottom: 50px;
+}
+
+/* Menu Section */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-item {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.menu-item h3 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    color: var(--warm-brown);
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 18px;
+    color: var(--rose-gold);
+    font-weight: bold;
+}
+
+/* About Us Section */
+#about {
+    background-color: var(--white);
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+    height: 350px;
+    background-color: #e0d8cd;
+    border-radius: 8px;
+}
+
+.about-text h3 {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    color: var(--warm-brown);
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+/* Contact Section */
+.contact-container {
+    display: flex;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.contact-info, #contact-form {
+    flex: 1;
+}
+
+#contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#contact-form input, #contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: var(--font-body);
+}
+
+#contact-form button {
+    background-color: var(--rose-gold);
+    color: var(--white);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#contact-form button:hover {
+    background-color: #a15c66;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--warm-brown);
+    color: var(--soft-cream);
+    font-size: 14px;
+}
+
+/* --- Responsive Design --- */
+
+/* Tablet View */
+@media (max-width: 768px) {
+    #home h1 {
+        font-size: 42px;
+    }
+
+    section h2 {
+        font-size: 36px;
+    }
+
+    .about-content,
+    .contact-container {
+        flex-direction: column;
+    }
+
+    .header-container {
+        padding: 10px 20px;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 480px) {
+    #home h1 {
+        font-size: 36px;
+    }
+
+    #home p {
+        font-size: 16px;
+    }
+
+    section h2 {
+        font-size: 30px;
+    }
+
+    section {
+        padding: 60px 15px;
+    }
+
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul {
+        justify-content: center;
+        padding-left: 0; /* Remove default padding */
+    }
+}
