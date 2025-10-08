@@ -1,5 +1,6 @@
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
+from website_builder.db.crud import find_session_by_id, add_task_manager_output, serialize_list
 from website_builder.models.state_models import OrchestratorState, RequirementsState, TaskManagerState, DeveloperState
 from website_builder.prompts.developer_prompts import developer_system_prompt
 from website_builder.prompts.requirements_prompts import requirements_system_prompt
@@ -52,6 +53,8 @@ def create_task_manager_node(task_manager_graph):
     def task_manager_node(state: OrchestratorState) -> OrchestratorState:
         print("Starting Task Management Phase...")
 
+        session = find_session_by_id(state["session_id"])
+
         # Handle different types of requirements_output
         if isinstance(state["requirements_output"], str):
             conversation_summary = state["requirements_output"]
@@ -63,19 +66,27 @@ def create_task_manager_node(task_manager_graph):
                     conversation_summary += f"User: {msg.content}\n"
                 elif isinstance(msg, AIMessage) and not msg.tool_calls:
                     conversation_summary += f"Assistant: {msg.content}\n"
-
-        task_manager_input: TaskManagerState = {
-            "requirements_data": conversation_summary,
-            "tasks_messages": [
-                SystemMessage(content=task_manager_system_prompt()),
+        tasks = [
+                SystemMessage(content=task_manager_system_prompt(session.id)),
                 HumanMessage(
                     content=f"Based on this requirements conversation, create a project plan: {conversation_summary}"
                 ),
-            ],
+            ]
+        if session.task_manager_output is not None:
+            tasks.append(
+                HumanMessage(
+                    content=f"The following tasks have been already executed by the developer agent, create the additional tasks to finish the new requirements {session.task_manager_output}"
+                )
+            )
+
+        task_manager_input: TaskManagerState = {
+            "requirements_data": conversation_summary,
+            "tasks_messages": tasks,
             "parsed_tasks": []
         }
 
         task_result = task_manager_graph.invoke(task_manager_input)
+        add_task_manager_output(session.id, task_result["parsed_tasks"])
 
         print(f"Task Management Complete - Generated {len(task_result['parsed_tasks'])} tasks")
 

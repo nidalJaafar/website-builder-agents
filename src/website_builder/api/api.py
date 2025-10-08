@@ -7,6 +7,10 @@ import uuid
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
+from website_builder.db.crud import initialize_session, update_session_state, find_session_by_id, deserialize_state, \
+    add_requirements_gatherer_output
+from website_builder.db.database import init_db
+
 # Load environment variables
 load_dotenv()
 
@@ -14,9 +18,6 @@ from website_builder.graphs.orchestrator_graph import build_orchestrator_graph
 from website_builder.graphs.requirements_graph import build_requirements_graph, build_single_step_requirements_graph
 from website_builder.models.state_models import OrchestratorState, RequirementsState
 from website_builder.prompts.requirements_prompts import requirements_system_prompt
-
-# Session storage (in production, use Redis or a database)
-conversation_sessions: Dict[str, RequirementsState] = {}
 
 app = FastAPI(
     title="Website Builder API",
@@ -71,8 +72,7 @@ async def start_requirements_chat(user_input: Dict[str, Any]):
     Returns:
     {
         "session_id": "unique-session-id",
-        "agent_message": "Agent's response/question",
-        "is_complete": false
+        "agent_message": "Agent's response/question"
     }
     """
     try:
@@ -82,7 +82,7 @@ async def start_requirements_chat(user_input: Dict[str, Any]):
             raise HTTPException(status_code=400, detail="user_input field is required.")
         
         # Create new session
-        session_id = str(uuid.uuid4())
+        session = initialize_session()
         
         # Initialize requirements state
         requirements_state: RequirementsState = {
@@ -98,8 +98,8 @@ async def start_requirements_chat(user_input: Dict[str, Any]):
         result = requirements_graph.invoke(requirements_state)
         
         # Store session
-        conversation_sessions[session_id] = result
-        
+        update_session_state(session.id, result)
+
         # Get the last agent message
         last_message = result["requirements_messages"][-1]
         agent_response = last_message.content if hasattr(last_message, 'content') else str(last_message)
@@ -110,7 +110,7 @@ async def start_requirements_chat(user_input: Dict[str, Any]):
                       last_message.tool_calls)
         
         return {
-            "session_id": session_id,
+            "session_id": session.id,
             "agent_message": agent_response,
             "is_complete": is_complete
         }
@@ -156,11 +156,10 @@ async def send_chat_message(message_data: Dict[str, Any]):
         if not session_id or not user_message:
             raise HTTPException(status_code=400, detail="session_id and user_input are required.")
         
-        if session_id not in conversation_sessions:
-            raise HTTPException(status_code=404, detail="Session not found.")
+        session = find_session_by_id(session_id)
         
         # Get current session state
-        current_state = conversation_sessions[session_id]
+        current_state = deserialize_state(session.state)
         
         # Add user message to conversation
         current_state["requirements_messages"].append(HumanMessage(content=user_message))
@@ -173,7 +172,7 @@ async def send_chat_message(message_data: Dict[str, Any]):
         result = requirements_graph.invoke(current_state)
         
         # Update session
-        conversation_sessions[session_id] = result
+        session = update_session_state(session.id, result)
         
         # Get the last agent message
         last_message = result["requirements_messages"][-1]
@@ -189,7 +188,7 @@ async def send_chat_message(message_data: Dict[str, Any]):
             print(f"[DEBUG] Requirements complete for session {session_id}, proceeding to website building...")
             
             # Get the completed requirements conversation
-            requirements_result = conversation_sessions[session_id]
+            requirements_result = deserialize_state(session.state)
             
             # Build the orchestrator graph
             orchestrator = await build_orchestrator_graph()
@@ -202,8 +201,11 @@ async def send_chat_message(message_data: Dict[str, Any]):
                 "tasks_output": [],
                 "development_output": "",
                 "project_status": "starting",
-                "final_result": ""
+                "final_result": "",
+                "session_id": session.id
             }
+
+            add_requirements_gatherer_output(session.id, requirements_result["requirements_messages"])
             
             print("[DEBUG] Starting orchestrator execution with completed requirements...")
             
@@ -219,10 +221,7 @@ async def send_chat_message(message_data: Dict[str, Any]):
                     final_state = state_update
             
             print("[DEBUG] Orchestrator execution completed")
-            
-            # Clean up session
-            del conversation_sessions[session_id]
-            
+
             if not final_state:
                 raise HTTPException(status_code=500, detail="No final state received from orchestrator")
             
@@ -330,7 +329,8 @@ async def send_chat_message(message_data: Dict[str, Any]):
 
 def main():
     import uvicorn
-    uvicorn.run("website_builder.api.api:app", host="127.0.0.1", port=8000)
+    init_db()
+    uvicorn.run("website_builder.api.api:app", host="127.0.0.1", port=8080)
 
 if __name__ == "__main__":
     main()

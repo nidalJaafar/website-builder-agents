@@ -137,46 +137,240 @@ async def test_developer_async():
     app = await build_developer_graph()
 
     sample_tasks = [
-  {
-    "id": "TASK_001",
-    "title": "Create Multi-Page Project Structure and Core HTML Pages",
-    "description": "Create complete project directory structure (website_project/css/, website_project/js/, website_project/images/) and all main HTML pages: index.html (Home), shop.html (Shop), about.html (About), contact.html (Contact), lookbook.html (Lookbook). Each page must include: sophisticated semantic HTML5 structure with ARIA landmarks, responsive meta tags, Open Graph meta data, consistent header with animated navigation (logo + menu), hero section with brand messaging, main content area with section-specific placeholders, and semantic footer with contact info. Header navigation must link correctly between all pages. Include phone number 7123456 in contact page and footer.",
-    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/", "website_project/js/", "website_project/images/"],
-    "success_criteria": "All 5 HTML pages created with proper semantic structure, consistent navigation linking between pages, phone number included in contact page, all directories exist, pages validate as HTML5 with proper meta tags",
-    "dependencies": "None"
-  },
-  {
-    "id": "TASK_002",
-    "title": "Implement Advanced CSS Framework with Sophisticated Styling System",
-    "description": "Create website_project/css/styles.css with comprehensive CSS framework featuring: CSS Grid master layout system, custom CSS properties for brand colors and typography, advanced responsive design with mobile-first approach using clamp() for fluid typography, sophisticated animations using @keyframes for micro-interactions, glassmorphism effects for modern UI elements, advanced hover states with transform3d transitions, parallax scrolling capabilities, and intersection observer-ready animation classes. Include specific styling for: navigation animations, hero section gradients, product card layouts, team member displays, and lookbook masonry grid.",
-    "files": ["website_project/css/styles.css"],
-    "success_criteria": "Complete CSS framework with modern styling techniques, responsive design system, animation classes, custom properties for consistent theming, ready to enhance all HTML pages",
-    "dependencies": "TASK_001"
-  },
-  {
-    "id": "TASK_003",
-    "title": "Build Sophisticated JavaScript Interactions and E-commerce Functionality",
-    "description": "Create website_project/js/main.js with advanced JavaScript features: smooth page transitions between multi-page navigation, product filtering system for shop page with debounced search, interactive image galleries for lookbook with touch gesture support, team member modal displays for about page, real-time form validation for contact page with custom styling, shopping cart functionality with local storage persistence, and intersection observer animations for scroll-triggered content reveals. Implement event delegation for optimal performance and progressive enhancement approach.",
-    "files": ["website_project/js/main.js"],
-    "success_criteria": "JavaScript provides seamless multi-page navigation, functional product filtering, interactive galleries, form validation, shopping cart functionality, and scroll animations across all pages",
-    "dependencies": "TASK_001, TASK_002"
-  },
-  {
-    "id": "TASK_004",
-    "title": "Create Page-Specific Content and Advanced Interactive Elements",
-    "description": "Enhance each HTML page with sophisticated content structures: Home page with featured products carousel and brand storytelling sections, Shop page with product grid featuring filtering by category/size/price with smooth animations, About page with team member cards that reveal detailed bios on interaction, Contact page with multi-step form and real-time validation feedback, Lookbook page with masonry grid layout and full-screen image modal viewing. Implement CSS Grid asymmetrical layouts, overlapping elements, and magazine-style designs for visual sophistication.",
-    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/styles.css", "website_project/js/main.js"],
-    "success_criteria": "All pages feature advanced interactive elements, sophisticated layouts, smooth animations, and professional men's fashion aesthetic with complete e-commerce functionality",
-    "dependencies": "TASK_001, TASK_002, TASK_003"
-  },
-  {
-    "id": "TASK_005",
-    "title": "Final Optimization, Performance Enhancements and SEO Implementation",
-    "description": "Optimize all files for production: minify CSS and JavaScript, implement lazy loading for images, add comprehensive SEO meta tags including structured data for products, ensure WCAG 2.1 AA accessibility compliance, optimize navigation for screen readers, implement service worker for offline functionality, add social media sharing capabilities, and perform cross-browser testing. Include performance optimizations like image compression recommendations and critical CSS inlining.",
-    "files": ["website_project/index.html", "website_project/shop.html", "website_project/about.html", "website_project/contact.html", "website_project/lookbook.html", "website_project/css/styles.css", "website_project/js/main.js"],
-    "success_criteria": "Website achieves high performance scores, full accessibility compliance, comprehensive SEO implementation, cross-browser compatibility, and professional production readiness",
-    "dependencies": "TASK_001, TASK_002, TASK_003, TASK_004"
-  }
+    {
+        "id": "TASK_001",
+        "title": "Project Setup and Basic HTML Structure",
+        "description": "Create the core HTML files and the CSS directory structure. Each HTML file should have the basic boilerplate, including a `head` with a title, a `meta viewport` tag for responsiveness, and a link to the stylesheet. The `body` of each file should include placeholder `header`, `main`, and `footer` sections.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/index.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/menu.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/about.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/contact.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "success_criteria": "All HTML files are created with basic boilerplate. The CSS file is created and linked correctly in all HTML files. Opening any HTML file in a browser shows a blank page with the correct title (e.g., 'Sweet Moments - Home').",
+        "dependencies": "None"
+    },
+    {
+        "id": "TASK_002",
+        "title": "Implement Global Styles and Typography",
+        "description": "In `css/style.css`, set up the foundational styles for the entire website. This includes defining the color palette as CSS variables, setting up a basic CSS reset, and importing and applying a font from Google Fonts. The body should have a soft cream background and warm brown text color.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "implementation": "At the top of `style.css`, add an `@import` for the 'Montserrat' and 'Playfair Display' fonts from Google Fonts. Create a `:root` selector to define CSS variables for the color scheme. Apply a universal box-sizing rule and basic resets for margin and padding. Set default font styles on the `body` element.",
+            "content": {
+                "google_fonts_import": "@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap');",
+                "css_variables": {
+                    "--color-cream": "#F5F5DC",
+                    "--color-brown": "#A0522D",
+                    "--color-rose-gold": "#B76E79",
+                    "--color-dark-brown": "#654321",
+                    "--font-heading": "'Playfair Display', serif",
+                    "--font-body": "'Montserrat', sans-serif"
+                },
+                "body_styles": {
+                    "font-family": "var(--font-body)",
+                    "background-color": "var(--color-cream)",
+                    "color": "var(--color-dark-brown)",
+                    "line-height": "1.6"
+                },
+                "heading_styles": {
+                    "font-family": "var(--font-heading)",
+                    "color": "var(--color-brown)",
+                    "font-weight": "700"
+                }
+            }
+        },
+        "success_criteria": "The website's background is soft cream, default text is warm brown, and the specified Google Fonts are applied to headings and body text across all pages.",
+        "dependencies": "TASK_001"
+    },
+    {
+        "id": "TASK_003",
+        "title": "Build Reusable Header and Navigation",
+        "description": "Create a consistent header and navigation bar that will appear on all pages. The header should contain the bakery name 'Sweet Moments' as a logo/link to the homepage, and a navigation menu with links to Home, Menu, About, and Contact.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/index.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/menu.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/about.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/contact.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "html_structure": "In each HTML file, add `<header class='main-header'>` containing a `div` for the logo `<a href='index.html' class='logo'>Sweet Moments</a>` and a `<nav>` with a `ul` of links.",
+            "layout": "Use Flexbox on `.main-header`. Set `display: flex`, `justify-content: space-between`, and `align-items: center`.",
+            "spacing": "The header should have `padding: 1rem 5%`.",
+            "typography": "The logo `.logo` should use `font-family: var(--font-heading)`, `font-size: 1.8rem`, `color: var(--color-brown)`, and `text-decoration: none`. Nav links should have `font-size: 1rem` and `text-decoration: none`.",
+            "colors": "Nav links color should be `var(--color-dark-brown)`.",
+            "hover_states": "On hover, navigation links (`nav a`) should change color to `var(--color-rose-gold)` and have a `text-decoration: underline`."
+        },
+        "success_criteria": "A header appears on all four pages with the logo on the left and navigation links on the right. Links navigate to the correct pages and display hover effects.",
+        "dependencies": "TASK_002"
+    },
+    {
+        "id": "TASK_004",
+        "title": "Build Reusable Footer",
+        "description": "Create a consistent footer that will appear on all pages. The footer should contain the bakery's address and phone number.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/index.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/menu.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/about.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/contact.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "html_structure": "In each HTML file, add `<footer class='main-footer'>` containing two paragraphs: one for the address and one for the phone number. Add a third paragraph for a copyright notice.",
+            "content": {
+                "address": "123 Baker Street, Portland",
+                "phone": "555-0123",
+                "copyright": "&copy; 2023 Sweet Moments"
+            },
+            "layout": "Use Flexbox for the footer content. Set `display: flex`, `justify-content: space-around`, and `align-items: center`.",
+            "styling": "The footer should have a `background-color: var(--color-brown)`, `color: var(--color-cream)`, and `padding: 2rem 5%`. Text should be centered.",
+            "typography": "Set `font-size: 0.9rem`."
+        },
+        "success_criteria": "A footer appears at the bottom of all four pages, displaying the correct contact information and copyright notice with the specified styling.",
+        "dependencies": "TASK_002"
+    },
+    {
+        "id": "TASK_005",
+        "title": "Develop Home Page Content",
+        "description": "Build the content for the home page (`index.html`). This includes a welcoming hero section and a 'Featured Pastries' section.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/index.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "hero_section": {
+                "html": "Create a `<section class='hero'>` with an `h1` ('Handcrafted Goodness, Baked with Love') and a `p` ('Welcome to Sweet Moments, where every bite is a memory.').",
+                "layout": "Center the text horizontally and vertically. Use `display: flex`, `flex-direction: column`, `justify-content: center`, `align-items: center`.",
+                "styling": "Give the section `min-height: 60vh` and `padding: 2rem`.",
+                "typography": "`h1` should have `font-size: 3rem`, and `p` should have `font-size: 1.2rem`."
+            },
+            "featured_section": {
+                "html": "Create a `<section class='featured-pastries'>` with an `h2` ('Our Featured Pastries') and a `div` container (`.pastry-cards`) for the items.",
+                "cards_html": "Inside `.pastry-cards`, create three `div` elements with class `.card`. Each card should contain an `h3` (e.g., 'Artisanal Croissants'), a `p` ('Flaky, buttery, and baked to perfection.'), and a placeholder for an image `div` with a background color for now.",
+                "layout": "Use Flexbox for `.pastry-cards` (`display: flex`, `justify-content: center`, `gap: 2rem`).",
+                "card_styling": "Each `.card` should have `padding: 1.5rem`, `background-color: #FFFFFF`, `border-radius: 8px`, and a subtle `box-shadow: 0 4px 8px rgba(0,0,0,0.1)`."
+            }
+        },
+        "success_criteria": "The home page displays a large, centered welcome message and a section below it with three styled cards representing featured pastries.",
+        "dependencies": "TASK_003"
+    },
+    {
+        "id": "TASK_006",
+        "title": "Develop Menu Page Content",
+        "description": "Build the content for the menu page (`menu.html`). Display all menu items and their prices in a clean, easy-to-read format.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/menu.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "html_structure": "In `main`, add a `<section class='menu-section'>` with an `h1` ('Our Menu'). Inside, create a `div` with class `.menu-grid`.",
+            "menu_items": [
+                {
+                    "name": "Croissants",
+                    "price": "$3.50"
+                },
+                {
+                    "name": "Sourdough Bread",
+                    "price": "$6.00"
+                },
+                {
+                    "name": "Chocolate Cake",
+                    "price": "$25.00"
+                },
+                {
+                    "name": "Cupcakes",
+                    "price": "$4.00 each"
+                }
+            ],
+            "item_html": "For each menu item, create a `div` with class `.menu-item` inside `.menu-grid`. Each `.menu-item` will contain an `h3` for the name and a `p` for the price.",
+            "layout": "Use CSS Grid for `.menu-grid`: `display: grid`, `grid-template-columns: repeat(2, 1fr)`, `gap: 2rem`.",
+            "styling": "Each `.menu-item` should have a `border-bottom: 2px dotted var(--color-brown)` and `padding-bottom: 1rem`. Use flexbox within `.menu-item` to align the name to the left and price to the right (`justify-content: space-between`)."
+        },
+        "success_criteria": "The menu page displays a title and a grid of all four menu items, each with its name and price clearly listed and styled as specified.",
+        "dependencies": "TASK_003"
+    },
+    {
+        "id": "TASK_007",
+        "title": "Develop About Us Page Content",
+        "description": "Build the content for the 'About Us' page (`about.html`). This page will have a title and a paragraph explaining the bakery's history.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/about.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "html_structure": "Inside `main`, create a `<section class='about-section'>` with an `h1` ('Our Story') and a `p` tag.",
+            "content": "The paragraph should contain the text: 'We are a family-owned bakery, proudly serving the Portland community with handcrafted pastries and breads since 1995. Our passion is creating delicious moments for you and your loved ones.'",
+            "layout": "The section should have a `max-width: 800px`, `margin: 0 auto`, and `padding: 4rem 2rem`. Text should be centered.",
+            "typography": "The `h1` should have `font-size: 2.5rem` and the `p` should have `font-size: 1.1rem` and `line-height: 1.8`."
+        },
+        "success_criteria": "The About Us page displays the title and paragraph with the specified content and styling, centered on the page.",
+        "dependencies": "TASK_003"
+    },
+    {
+        "id": "TASK_008",
+        "title": "Develop Contact Page Layout and Form",
+        "description": "Build the layout and static form for the contact page (`contact.html`). It will include contact details and a form for users to send a message.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/contact.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "html_structure": "Inside `main`, create a `<section class='contact-section'>` with an `h1` ('Get In Touch'). Inside, create a `div` with class `.contact-container` that will hold two child divs: `.contact-info` and `.contact-form-container`.",
+            "contact_info_html": "In `.contact-info`, add `h3` tags for 'Address' and 'Phone' with paragraphs containing '123 Baker Street, Portland' and '555-0123'.",
+            "form_html": "In `.contact-form-container`, create a `<form id='contact-form'>` with `label` and `input` fields for Name (text), Email (email), a `textarea` for Message, and a `button` of type 'submit' with text 'Send Message'.",
+            "layout": "Use CSS Grid for `.contact-container`: `display: grid`, `grid-template-columns: 1fr 1fr`, `gap: 3rem`.",
+            "form_styling": "Inputs and textarea should have `width: 100%`, `padding: 0.75rem`, `margin-bottom: 1rem`, `border: 1px solid var(--color-brown)`, `border-radius: 4px`. The submit button should have `background-color: var(--color-rose-gold)`, `color: white`, `padding: 0.75rem 1.5rem`, `border: none`, `cursor: pointer`, and `transition: background-color 0.3s`.",
+            "hover_states": "The submit button should darken slightly on hover (e.g., `filter: brightness(0.9)`)."
+        },
+        "success_criteria": "The contact page displays the address and phone number alongside a fully styled, but non-functional, contact form.",
+        "dependencies": "TASK_003"
+    },
+    {
+        "id": "TASK_009",
+        "title": "Implement Contact Form Validation and Submission Feedback",
+        "description": "Add JavaScript to handle the contact form. It should validate that all fields are filled and the email is valid. On successful submission, it should show a confirmation message.",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/contact.html",
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/js/main.js"
+        ],
+        "details": {
+            "setup": "Create the `js/main.js` file and link it at the bottom of `contact.html` using `<script src='js/main.js' defer></script>`.",
+            "trigger": "The script will add an event listener to the form's `submit` event.",
+            "functionality": [
+                "1. Prevent the default form submission using `event.preventDefault()`.",
+                "2. Get the values from the name, email, and message fields.",
+                "3. **Validation:** Check if name is empty. Check if message is empty. Check if email is a valid format (using a simple regex like `/^\\S+@\\S+\\.\\S+$/`).",
+                "4. **Error State:** If any field is invalid, add an 'error' class to the corresponding input (which can be styled in CSS with a red border) and display a small error message below it. Do not proceed.",
+                "5. **Success State:** If all fields are valid, display a success message to the user (e.g., create a `p` element with text 'Thank you for your message!' and append it after the form). Then, clear the form fields."
+            ]
+        },
+        "success_criteria": "Submitting the form with empty fields or an invalid email shows an error. Submitting a valid form prevents page reload, shows a success message, and clears the form.",
+        "dependencies": "TASK_008"
+    },
+    {
+        "id": "TASK_010",
+        "title": "Implement Responsive Design",
+        "description": "Add media queries to `css/style.css` to ensure the website is usable and looks elegant on mobile devices (e.g., screen widths below 768px).",
+        "files": [
+            "website_project/aecccfaf-f59f-402f-bb17-004b0c8ad189/css/style.css"
+        ],
+        "details": {
+            "implementation": "Use a media query: `@media (max-width: 768px) { ... }`",
+            "responsive_changes": [
+                "**Header:** Change the flex-direction to `column` and center the items. The nav links should stack vertically.",
+                "**Hero Section:** Decrease the `h1` font size to `2rem`.",
+                "**Featured Pastries:** Change the flex-direction of `.pastry-cards` to `column` so cards stack vertically.",
+                "**Menu Page:** Change the `.menu-grid` to a single column layout: `grid-template-columns: 1fr`.",
+                "**Contact Page:** Change the `.contact-container` to a single column layout: `grid-template-columns: 1fr`."
+            ]
+        },
+        "success_criteria": "When the browser window is resized to be narrower than 768px, the layout adjusts correctly: navigation stacks, grid layouts become single-column, and text is readable.",
+        "dependencies": "TASK_009"
+    }
 ]
     initial_state = {
         "parsed_tasks": sample_tasks,

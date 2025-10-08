@@ -35,3 +35,4 @@ class OrchestratorState(TypedDict):
     development_output: str
     project_status: str
     final_result: str
+    session_id: str
