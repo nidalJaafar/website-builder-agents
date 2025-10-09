@@ -64,7 +64,7 @@ async def parse_json(json_data: Dict[str, Any]):
 def main():
     import uvicorn
     init_db()
-    uvicorn.run("website_builder.api.controller.api:app", host="127.0.0.1", port=8080)
+    uvicorn.run("website_builder.api.controller.api:app", host="0.0.0.0", port=8080)
 
 
 if __name__ == "__main__":
