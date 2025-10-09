@@ -51,13 +51,13 @@ jobs:
             docker pull ghcr.io/${{ steps.repo.outputs.owner_lower }}/${{ steps.repo.outputs.repo_lower }}:latest
             
             # Stop and remove old container if it exists
-            docker stop my-app || true
-            docker rm my-app || true
+            docker stop website-builder-agents || true
+            docker rm website-builder-agents || true
             
             # Run the new container with environment variables
             docker run -d \
-              --name my-app \
-              -p 80:80 \
+              --name website-builder-agents \
+              -p 80:8080 \
               --restart unless-stopped \
               -e GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} \
               ghcr.io/${{ steps.repo.outputs.owner_lower }}/${{ steps.repo.outputs.repo_lower }}:latest
