@@ -26,6 +26,6 @@ RUN useradd --create-home appuser \
 
 USER appuser
 
-EXPOSE 8000
+EXPOSE 8080
 
 ENTRYPOINT ["./start.sh"]
