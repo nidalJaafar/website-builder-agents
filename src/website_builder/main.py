@@ -24,7 +24,7 @@ async def run_orchestrator():
     }
 
     try:
-        async for step in orchestrator.astream(initial_state, config={"recursion_limit": 10000}):
+        async for step in orchestrator.astream(initial_state, config={"recursion_limit": 100000}, stream_mode=["custom", "updates"]):
             for node_name, state_update in step.items():
                 print(f"Phase: {node_name}")
                 if "current_phase" in state_update:

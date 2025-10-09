@@ -4,24 +4,23 @@ version = "0.1.0"
 description = "Multi agent website builder"
 requires-python = ">=3.11"
 dependencies = [
-    "langchain-deepseek>=0.1.4",
+    "langchain-google-genai>=2.1.12",
     "langchain-mcp-adapters>=0.1.9",
     "langgraph>=0.6.6",
     "nest-asyncio>=1.6.0",
     "pyppeteer>=2.0.0",
     "python-dotenv>=1.1.1",
-    "langchain-openai>=0.3.28",
     "fastapi>=0.104.0",
     "uvicorn[standard]>=0.24.0",
     "requests>=2.31.0",
+    "sqlalchemy>=2.0.43",
 ]
 
 [tool.uv]
 package = true
 
 [project.scripts]
-website-builder = "website_builder.main:main"
-wb = "website_builder.main:main"
+api = "website_builder.api.controller.api:main"
 
 test-requirements = "website_builder.scripts.test_graphs:test_requirements"
 test-tasks = "website_builder.scripts.test_graphs:test_task_manager"
@@ -32,7 +31,3 @@ visualize-graphs = "website_builder.scripts.utilities:visualize_all_graphs"
 setup-project = "website_builder.scripts.utilities:setup_project_workspace"
 clean-project = "website_builder.scripts.utilities:clean_project_workspace"
 
-json-parser = "website_builder.main_json:main"
-json-parser-clean = "website_builder.api.cli:clean_project"
-json-parser-setup = "website_builder.api.cli:setup_project"
-json-parser-api = "website_builder.api.cli:start_api"

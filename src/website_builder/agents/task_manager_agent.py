@@ -1,10 +1,13 @@
-import re
+import json
+import logging
 
-from langchain_deepseek import ChatDeepSeek
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from website_builder.models.state_models import TaskManagerState
 
-task_manager_llm = ChatDeepSeek(model="deepseek-chat")
+logger = logging.getLogger(__name__)
+
+task_manager_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
 
 
 def task_manager_send(state: TaskManagerState) -> TaskManagerState:
@@ -12,22 +15,19 @@ def task_manager_send(state: TaskManagerState) -> TaskManagerState:
     return {"tasks_messages": [response]}
 
 
-import json
-
-
 def parse_tasks(state: TaskManagerState) -> TaskManagerState:
     try:
         tasks_output = state["tasks_messages"][-1].content if state["tasks_messages"] else ""
-        print(tasks_output)
+        logger.info(tasks_output)
         tasks_output = tasks_output.split("```json")[1].split("```")[0]
         tasks = json.loads(tasks_output.strip())
-        print(tasks)
+        logger.info(tasks)
         return {"parsed_tasks": tasks}
     except json.JSONDecodeError as e:
-        print(f"JSON parsing error: {e}")
-        print(f"Raw output: {tasks_output}")
+        logger.error(f"JSON parsing error: {e}")
+        logger.error(f"Raw output: {tasks_output}")
         return {"project_status": "error", "parsed_tasks": []}
 
     except Exception as e:
-        print(f"Error parsing tasks: {e}")
+        logger.error(f"Error parsing tasks: {e}")
         return {"project_status": "error", "parsed_tasks": []}
