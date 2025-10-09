@@ -20,9 +20,7 @@ dependencies = [
 package = true
 
 [project.scripts]
-website-builder = "website_builder.main:main"
-wb = "website_builder.main:main"
-api = "website_builder.api.api:main"
+api = "website_builder.api.controller.api:main"
 
 test-requirements = "website_builder.scripts.test_graphs:test_requirements"
 test-tasks = "website_builder.scripts.test_graphs:test_task_manager"
@@ -33,9 +31,3 @@ visualize-graphs = "website_builder.scripts.utilities:visualize_all_graphs"
 setup-project = "website_builder.scripts.utilities:setup_project_workspace"
 clean-project = "website_builder.scripts.utilities:clean_project_workspace"
 
-json-parser = "website_builder.main_json:main"
-json-parser-clean = "website_builder.api.cli:clean_project"
-json-parser-setup = "website_builder.api.cli:setup_project"
-json-parser-api = "website_builder.api.cli:start_api"
-
-launch-api = "website_builder.api.api:main"

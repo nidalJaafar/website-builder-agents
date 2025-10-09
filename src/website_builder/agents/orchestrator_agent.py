@@ -1,10 +1,14 @@
+import logging
+
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
-from website_builder.db.crud import find_session_by_id, add_task_manager_output, serialize_list
+from website_builder.db.crud import find_session_by_id, add_task_manager_output, complete_session
 from website_builder.models.state_models import OrchestratorState, RequirementsState, TaskManagerState, DeveloperState
 from website_builder.prompts.developer_prompts import developer_system_prompt
 from website_builder.prompts.requirements_prompts import requirements_system_prompt
 from website_builder.prompts.task_manager_prompts import task_manager_system_prompt
+
+logger = logging.getLogger(__name__)
 
 
 def route_entry_point(state: OrchestratorState) -> str:
@@ -21,7 +25,7 @@ def route_entry_point(state: OrchestratorState) -> str:
 
 def create_requirements_node(requirements_graph):
     def requirements_node(state: OrchestratorState) -> OrchestratorState:
-        print("Starting Requirements Phase...")
+        logger.info("Starting Requirements Phase...")
 
         # Create requirements input state
         requirements_input: RequirementsState = {
@@ -31,15 +35,15 @@ def create_requirements_node(requirements_graph):
 
         # If user_input is provided (from API), pass it to the requirements graph
         if state.get("user_input"):
-            print(f"Processing user input: {state['user_input'][:100]}...")
+            logger.info(f"Processing user input: {state['user_input'][:100]}...")
             requirements_input["user_input"] = state["user_input"]
         else:
-            print("Using interactive requirements gathering...")
+            logger.info("Using interactive requirements gathering...")
 
         # Execute the requirements graph
         requirements_result = requirements_graph.invoke(requirements_input)
 
-        print("Requirements Phase Complete")
+        logger.info("Requirements Phase Complete")
 
         return {
             "current_phase": "requirements_complete",
@@ -51,7 +55,7 @@ def create_requirements_node(requirements_graph):
 
 def create_task_manager_node(task_manager_graph):
     def task_manager_node(state: OrchestratorState) -> OrchestratorState:
-        print("Starting Task Management Phase...")
+        logger.info("Starting Task Management Phase...")
 
         session = find_session_by_id(state["session_id"])
 
@@ -67,11 +71,11 @@ def create_task_manager_node(task_manager_graph):
                 elif isinstance(msg, AIMessage) and not msg.tool_calls:
                     conversation_summary += f"Assistant: {msg.content}\n"
         tasks = [
-                SystemMessage(content=task_manager_system_prompt(session.id)),
-                HumanMessage(
-                    content=f"Based on this requirements conversation, create a project plan: {conversation_summary}"
-                ),
-            ]
+            SystemMessage(content=task_manager_system_prompt(session.id)),
+            HumanMessage(
+                content=f"Based on this requirements conversation, create a project plan: {conversation_summary}"
+            ),
+        ]
         if session.task_manager_output is not None:
             tasks.append(
                 HumanMessage(
@@ -88,7 +92,7 @@ def create_task_manager_node(task_manager_graph):
         task_result = task_manager_graph.invoke(task_manager_input)
         add_task_manager_output(session.id, task_result["parsed_tasks"])
 
-        print(f"Task Management Complete - Generated {len(task_result['parsed_tasks'])} tasks")
+        logger.info(f"Task Management Complete - Generated {len(task_result['parsed_tasks'])} tasks")
 
         return {
             "current_phase": "tasks_complete",
@@ -100,7 +104,7 @@ def create_task_manager_node(task_manager_graph):
 
 def create_developer_node(developer_graph):
     async def developer_node(state: OrchestratorState) -> OrchestratorState:
-        print(" Starting Development Phase...")
+        logger.info(" Starting Development Phase...")
 
         developer_input: DeveloperState = {
             "parsed_tasks": state["tasks_output"],
@@ -112,7 +116,7 @@ def create_developer_node(developer_graph):
 
         dev_result = await developer_graph.ainvoke(developer_input)
 
-        print("Development Phase Complete")
+        logger.info("Development Phase Complete")
 
         # Transform back to orchestrator state
         return {
@@ -126,7 +130,7 @@ def create_developer_node(developer_graph):
 
 def finalize_project_node(state: OrchestratorState) -> OrchestratorState:
     """Finalize the project and create summary"""
-    print("Finalizing Project...")
+    logger.info("Finalizing Project...")
 
     # Handle requirements output length calculation
     requirements_length = len(str(state["requirements_output"])) if state["requirements_output"] else 0
@@ -140,6 +144,8 @@ def finalize_project_node(state: OrchestratorState) -> OrchestratorState:
 
     Your website has been successfully created!
     """
+
+    complete_session(state["session_id"])
 
     return {
         "current_phase": "complete",

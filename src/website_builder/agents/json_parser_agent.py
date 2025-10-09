@@ -1,10 +1,14 @@
 import json
+import logging
+
 from dotenv import load_dotenv
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+
 from website_builder.models.state_models import JsonDecoderState
 from website_builder.prompts.json_parser_prompt import json_parser_system_prompt
 
+logger = logging.getLogger(__name__)
 load_dotenv()
 
 json_decoder_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro")
@@ -26,28 +30,28 @@ def user_message(state: JsonDecoderState) -> JsonDecoderState:
 def send_message(state: JsonDecoderState) -> JsonDecoderState:
     last_message = state["parsed_text"][-1]
     user_input = last_message.content
-    
+
     # Ensure user_input is a string
     if not isinstance(user_input, str):
-        print("Invalid input. Please provide a JSON string.")
+        logger.warn("Invalid input. Please provide a JSON string.")
         return state
 
     try:
         parsed_json = json.loads(user_input)
     except json.JSONDecodeError:
-        print("Invalid JSON input. Please provide a valid JSON description.")
+        logger.error("Invalid JSON input. Please provide a valid JSON description.")
         return state
 
     # Prepare prompt for LLM using the system prompt
     system_prompt = json_parser_system_prompt()
     json_content = json.dumps(parsed_json, indent=2)
     prompt = f"{system_prompt}\n\nJSON:\n{json_content}\nDescription:"
-    
+
     try:
         response = json_decoder_llm.invoke([HumanMessage(content=prompt)])
-        print(f"JSON Decoder Agent: {response.content}")
+        logger.info(f"JSON Decoder Agent: {response.content}")
     except Exception as e:
-        print(f"Error calling LLM: {e}")
+        logger.error(f"Error calling LLM: {e}")
         return state
     return {
         "parsed_text": [response],

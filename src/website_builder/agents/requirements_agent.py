@@ -1,3 +1,5 @@
+import logging
+
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -5,6 +7,7 @@ from website_builder.models.state_models import RequirementsState
 from website_builder.tools.validation_tools import exit_tool
 
 requirements_llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro").bind_tools([exit_tool])
+logger = logging.getLogger(__name__)
 
 
 def user_message(state: RequirementsState) -> RequirementsState:
@@ -12,7 +15,7 @@ def user_message(state: RequirementsState) -> RequirementsState:
     if "user_input" in state and state["user_input"]:
         message = HumanMessage(content=state["user_input"])
         return {"requirements_messages": [message]}
-    
+
     # Interactive mode (CLI)
     if not any(
             msg for msg in state["requirements_messages"] if isinstance(msg, HumanMessage)
@@ -26,7 +29,7 @@ def user_message(state: RequirementsState) -> RequirementsState:
 
 def send_message(state: RequirementsState) -> RequirementsState:
     response = requirements_llm.invoke(state["requirements_messages"])
-    print(f"Requirements Agent: {response.content}")
+    logger.info(f"Requirements Agent: {response.content}")
     return {"requirements_messages": [response]}
 
 
@@ -47,14 +50,14 @@ def process_single_message(state: RequirementsState) -> RequirementsState:
     else:
         # Use existing messages
         messages = state["requirements_messages"]
-    
+
     # Get agent response
     response = requirements_llm.invoke(messages)
-    print(f"Requirements Agent: {response.content}")
-    
+    logger.info(f"Requirements Agent: {response.content}")
+
     # Add agent response to messages
     messages.append(response)
-    
+
     return {
         "requirements_messages": messages,
         "requirements_data": ""

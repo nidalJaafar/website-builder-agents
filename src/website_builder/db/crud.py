@@ -3,7 +3,7 @@ from typing import Dict, Any
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
 
 from website_builder.db.database import Db_session
-from website_builder.db.database_models import Session, File
+from website_builder.db.database_models import Session
 
 
 def serialize_message(msg):
@@ -111,24 +111,6 @@ def add_task_manager_output(session_id: str, task_manager_output: Any) -> Sessio
         return session
 
 
-def add_file_to_session(session_id: str, file_path: str, content: str) -> Session:
-    with Db_session() as db:
-        session = db.query(Session).filter(Session.id == session_id).first()
-        if not session:
-            raise ValueError("session not found")
-
-        file = File(
-            file_path=file_path,
-            content=content,
-            session_id=session_id
-        )
-        db.add(file)
-        db.commit()
-        db.refresh(file)
-        db.refresh(session)
-        return session
-
-
 def update_session_state(session_id: str, state: Dict[str, Any]) -> Session:
     """Update session state by session ID"""
     with Db_session() as db:
@@ -138,6 +120,17 @@ def update_session_state(session_id: str, state: Dict[str, Any]) -> Session:
 
         # Serialize state with message conversion
         session.state = serialize_state(state)
+        db.commit()
+        db.refresh(session)
+        return session
+
+def complete_session(session_id: str) -> Session:
+    with Db_session() as db:
+        session = db.query(Session).filter(Session.id == session_id).first()
+        if not session:
+            raise ValueError("session not found")
+
+        session.status = "complete"
         db.commit()
         db.refresh(session)
         return session

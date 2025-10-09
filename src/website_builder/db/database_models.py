@@ -16,6 +16,7 @@ class Session(Base):
         primary_key=True,
         default=lambda: str(uuid.uuid4())
     )
+    status: Mapped[str] = mapped_column(default="pending")
     requirement_gatherer_output: Mapped[Optional[str]] = mapped_column(nullable=True, type_=Text)
     task_manager_output: Mapped[Optional[str]] = mapped_column(nullable=True, type_=Text)
     state: Mapped[Optional[str]] = mapped_column(nullable=True, type_=Text)
