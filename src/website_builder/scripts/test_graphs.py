@@ -36,10 +36,10 @@ def test_requirements():
     setup_environment()
     print_section_header("REQUIREMENTS GRAPH TEST")
 
-    from website_builder.graphs.requirements_graph import build_requirements_graph
+    from website_builder.graphs.requirements_graph import build_single_step_requirements_graph
 
     print("Building requirements graph...")
-    app = build_requirements_graph()
+    app = build_single_step_requirements_graph()
 
     initial_state = {
         "requirements_messages": [SystemMessage(content=requirements_system_prompt())],

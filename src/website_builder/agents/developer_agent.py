@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, RemoveMessage, ToolMessage
@@ -10,6 +11,7 @@ from website_builder.tools.validation_tools import validate_task_completion, nex
 
 _developer_llm = None
 
+logger = logging.getLogger(__name__)
 
 async def get_developer_llm():
     global _developer_llm
@@ -56,6 +58,7 @@ async def execute_current_task(state: DeveloperState) -> DeveloperState:
             )
             messages = [*state["developer_messages"], task_message]
             response = await developer_llm.ainvoke(messages)
+            logger.info(f"Developer llm response {response.content}")
             return {"developer_messages": [task_message, response]}
 
         last_message = state["developer_messages"][-1]
@@ -106,6 +109,7 @@ def advance_to_next_task(state: DeveloperState) -> DeveloperState:
     """Move to the next task with context preservation"""
     try:
         next_index = state["current_task_index"] + 1
+        logger.info(f"Advancing to next task index {next_index}")
 
         if next_index >= len(state["parsed_tasks"]):
             return {"project_status": "completed", "current_task_index": next_index}
@@ -115,6 +119,7 @@ def advance_to_next_task(state: DeveloperState) -> DeveloperState:
 
         # Create context for next task
         project_context = build_project_context(state, task_summary)
+        logger.info(f"Current project context: {project_context}")
 
         # Keep only system message + context summary
         system_message = None
@@ -155,8 +160,7 @@ def build_project_context(state: DeveloperState, task_summary: str) -> str:
     # Extract created files from message history
     created_files = extract_created_files_from_messages(state["developer_messages"])
 
-    context = f"Project: Special Brew coffee shop website. "
-    context += f"Completed: {current_task['title']}. "
+    context = f"Completed: {current_task['title']}. "
     context += f"Files created: {', '.join(created_files)}. "
     context += f"Summary: {task_summary}"
 

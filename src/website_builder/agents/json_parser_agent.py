@@ -33,7 +33,7 @@ def send_message(state: JsonDecoderState) -> JsonDecoderState:
 
     # Ensure user_input is a string
     if not isinstance(user_input, str):
-        logger.warn("Invalid input. Please provide a JSON string.")
+        logger.warning("Invalid input. Please provide a JSON string.")
         return state
 
     try:
@@ -57,8 +57,3 @@ def send_message(state: JsonDecoderState) -> JsonDecoderState:
         "parsed_text": [response],
         "parsed_input_JSON": parsed_json
     }
-
-
-def should_continue(state: JsonDecoderState) -> str:
-    # Never continue automatically
-    return "no"

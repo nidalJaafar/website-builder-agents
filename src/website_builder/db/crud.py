@@ -184,11 +184,21 @@ def complete_session(session_id: str) -> Session:
         if not session:
             raise ValueError("session not found")
 
-        session.status = "complete"
+        session.status = "completed"
         db.commit()
         db.refresh(session)
         return session
 
+def reactivate_session(session_id: str) -> Session:
+    with Db_session() as db:
+        session = db.query(Session).filter(Session.id == session_id).first()
+        if not session:
+            raise ValueError("session not found")
+
+        session.status = "reactivated"
+        db.commit()
+        db.refresh(session)
+        return session
 
 def summarize_session_outputs(session_id: str) -> Session:
     """Manually trigger summarization of existing session outputs"""

@@ -10,49 +10,6 @@ from website_builder.prompts.task_manager_prompts import task_manager_system_pro
 
 logger = logging.getLogger(__name__)
 
-
-def route_entry_point(state: OrchestratorState) -> str:
-    """Route to appropriate starting phase based on current state"""
-    current_phase = state.get("current_phase", "starting")
-
-    if current_phase == "requirements_complete":
-        # Requirements already completed, skip to task management
-        return "tasks"
-    else:
-        # Start with requirements gathering
-        return "requirements"
-
-
-def create_requirements_node(requirements_graph):
-    def requirements_node(state: OrchestratorState) -> OrchestratorState:
-        logger.info("Starting Requirements Phase...")
-
-        # Create requirements input state
-        requirements_input: RequirementsState = {
-            "requirements_messages": [SystemMessage(content=requirements_system_prompt())],
-            "requirements_data": ""
-        }
-
-        # If user_input is provided (from API), pass it to the requirements graph
-        if state.get("user_input"):
-            logger.info(f"Processing user input: {state['user_input'][:100]}...")
-            requirements_input["user_input"] = state["user_input"]
-        else:
-            logger.info("Using interactive requirements gathering...")
-
-        # Execute the requirements graph
-        requirements_result = requirements_graph.invoke(requirements_input)
-
-        logger.info("Requirements Phase Complete")
-
-        return {
-            "current_phase": "requirements_complete",
-            "requirements_output": requirements_result["requirements_messages"][1:]
-        }
-
-    return requirements_node
-
-
 def create_task_manager_node(task_manager_graph):
     def task_manager_node(state: OrchestratorState) -> OrchestratorState:
         logger.info("Starting Task Management Phase...")
@@ -89,7 +46,11 @@ def create_task_manager_node(task_manager_graph):
             "parsed_tasks": []
         }
 
+        logger.info(f"Task manager input: {task_manager_input}")
+
         task_result = task_manager_graph.invoke(task_manager_input)
+
+        logger.info(f"Task manager output: {task_result}")
         add_task_manager_output(session.id, task_result["parsed_tasks"])
 
         logger.info(f"Task Management Complete - Generated {len(task_result['parsed_tasks'])} tasks")
