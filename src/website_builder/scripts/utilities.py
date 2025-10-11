@@ -36,13 +36,13 @@ def visualize_all_graphs():
         """Generate visualization for all graphs"""
         load_dotenv()
         try:
-            from website_builder.graphs.requirements_graph import build_requirements_graph
+            from website_builder.graphs.requirements_graph import build_single_step_requirements_graph
             from website_builder.graphs.task_manager_graph import build_task_manager_graph
             from website_builder.graphs.developer_graph import build_developer_graph
             from website_builder.graphs.orchestrator_graph import build_orchestrator_graph
 
             graphs_to_visualize = [
-                (build_requirements_graph(), "requirements_graph.png"),
+                (build_single_step_requirements_graph(), "requirements_graph.png"),
                 (build_task_manager_graph(), "task_manager_graph.png"),
                 (await build_developer_graph(), "developer_graph.png"),
                 (await build_orchestrator_graph(), "orchestrator_graph.png")

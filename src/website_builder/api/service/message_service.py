@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 from website_builder.db.crud import find_session_by_id, deserialize_state, update_session_state, \
-    add_requirements_gatherer_output, initialize_session
+    add_requirements_gatherer_output, initialize_session, reactivate_session
 from website_builder.db.database_models import Session
 from website_builder.graphs.orchestrator_graph import build_orchestrator_graph
 from website_builder.graphs.requirements_graph import build_single_step_requirements_graph
@@ -16,25 +16,31 @@ logger = logging.getLogger(__name__)
 
 
 async def service_send_chat_message(message_data: Dict[str, Any]):
+    logger.info(f"Request body: {message_data}")
     try:
         session_id = message_data.get("session_id", "")
         user_message = message_data.get("user_input", "")
         if not session_id or not user_message:
             raise HTTPException(status_code=400, detail="session_id and user_input are required.")
         session = find_session_by_id(session_id)
+        if session.status == 'completed':
+            reactivate_session(session_id)
         result = __send_requirement_gathering_message(session, user_message)
         is_complete, agent_response = __check_if_completed(result)
         if is_complete:
             await __handle_completed_requirements(session)
-        return {
+        response = {
             "agent_message": agent_response,
         }
+        logger.info(f"Response body: {response}")
+        return response
     except Exception as e:
         logger.error(f"Chat message error: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing message: {str(e)}")
 
 
 def service_start_requirements_chat(user_input: Dict[str, Any]):
+    logger.info(f"Request body: {user_input}")
     try:
         user_prompt = user_input.get("user_input", "")
         if not user_prompt:
@@ -47,13 +53,16 @@ def service_start_requirements_chat(user_input: Dict[str, Any]):
         }
         requirements_graph = build_single_step_requirements_graph()
         result = requirements_graph.invoke(requirements_state)
+        logger.info(f"Requirements result: {result}")
         update_session_state(session.id, result)
         last_message = result["requirements_messages"][-1]
         agent_response = last_message.content if hasattr(last_message, 'content') else str(last_message)
-        return {
+        response = {
             "session_id": session.id,
             "agent_message": agent_response,
         }
+        logger.info(f"Response body: {response}")
+        return response
     except Exception as e:
         logger.error(f"Chat start error: {e}")
         raise HTTPException(status_code=500, detail=f"Error starting conversation: {str(e)}")
@@ -82,7 +91,7 @@ async def __handle_completed_requirements(session: Session):
     requirements_result = deserialize_state(session.state)
     orchestrator = await build_orchestrator_graph()
     initial_state: OrchestratorState = {
-        "user_input": "",  # todo delete this from the orchestrator graph
+        "user_input": "",
         "current_phase": "requirements_complete",
         "requirements_output": requirements_result["requirements_messages"],
         "tasks_output": [],
@@ -94,7 +103,7 @@ async def __handle_completed_requirements(session: Session):
     add_requirements_gatherer_output(session.id, requirements_result["requirements_messages"])
     logger.info("Starting orchestrator execution with completed requirements...")
     final_state = None
-    async for step in orchestrator.astream(initial_state, config={"recursion_limit": 100000}):
+    async for step in orchestrator.astream(initial_state, config={"recursion_limit": 100000, "debug": True}):
         for node_name, state_update in step.items():
             logger.info(f"Phase: {node_name}")
             if "current_phase" in state_update:

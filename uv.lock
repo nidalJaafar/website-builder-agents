@@ -429,6 +429,15 @@ wheels = [
 ]
 
 [[package]]
+name = "json-repair"
+version = "0.52.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/63/2c3c3c8cc1c28a0a20a9ab0eff5439c989ce3cc5956d8a4c7cf1eae0a06e/json_repair-0.52.0.tar.gz", hash = "sha256:0eee59cb3145b462b0734d4cf3246b797686caa669d52eee8dd30e09ea6d7876", size = 35384, upload-time = "2025-10-05T17:18:12.387Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c6/7f/3a4e456da9a0f9ac54d9842ed51e96960826a98456f0826a9b3e808713c4/json_repair-0.52.0-py3-none-any.whl", hash = "sha256:c783069906a456f62e2a553fbef32a420a4745ff943e2014411728edcc7bf60a", size = 26350, upload-time = "2025-10-05T17:18:10.859Z" },
+]
+
+[[package]]
 name = "jsonpatch"
 version = "1.33"
 source = { registry = "https://pypi.org/simple" }
@@ -1399,6 +1408,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "json-repair" },
     { name = "langchain-google-genai" },
     { name = "langchain-mcp-adapters" },
     { name = "langgraph" },
@@ -1413,6 +1423,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.104.0" },
+    { name = "json-repair", specifier = ">=0.52.0" },
     { name = "langchain-google-genai", specifier = ">=2.1.12" },
     { name = "langchain-mcp-adapters", specifier = ">=0.1.9" },
     { name = "langgraph", specifier = ">=0.6.6" },

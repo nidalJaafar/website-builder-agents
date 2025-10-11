@@ -20,7 +20,7 @@ logging.basicConfig(
 )
 
 logging.getLogger("langchain_google_genai._function_utils").setLevel(logging.ERROR)
-logging.getLogger("grpc._cython.cygrp").setLevel(logging.INFO)
+logging.getLogger("grpc._cython.cygrpc").setLevel(logging.INFO)
 
 app = FastAPI(
     title="Website Builder API",

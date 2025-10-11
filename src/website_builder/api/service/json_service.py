@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def service_parse_json(json_data: Dict[str, Any]):
+    logger.info(f"JSON Data to be parsed: {json_data}")
     try:
         logger.info(f"Received JSON: {json_data}")
         json_string = json.dumps(json_data, indent=2)
@@ -28,8 +29,10 @@ def service_parse_json(json_data: Dict[str, Any]):
                 description = str(last_message.content) if last_message.content is not None else "No content generated"
             else:
                 description = str(last_message)
-            return {"description": description}
+            response =  {"description": description}
+            logger.info(f"Response: {response}")
         else:
+            logger.error("Error generating description")
             raise HTTPException(status_code=500, detail="No response generated from LLM")
 
     except json.JSONDecodeError as e:
