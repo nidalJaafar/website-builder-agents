@@ -31,6 +31,7 @@ def service_parse_json(json_data: Dict[str, Any]):
                 description = str(last_message)
             response =  {"description": description}
             logger.info(f"Response: {response}")
+            return response
         else:
             logger.error("Error generating description")
             raise HTTPException(status_code=500, detail="No response generated from LLM")
